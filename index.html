@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MoneyFlow - Quản lý chi tiêu</title>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" type="image/png" href="
+    https://cdn.upanhlaylink.com/i/p3XFidcf.png">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">
+                <i data-lucide="wallet"></i>
+            </div>
+
+            <span>MoneyFlow</span>
+        </div>
+
+        <nav>
+
+            <button class="nav-item active" data-section="dashboard">
+                <i data-lucide="layout-dashboard"></i>
+                <span>Tổng quan</span>
+            </button>
+
+            <button class="nav-item" data-section="transactions">
+                <i data-lucide="arrow-down-up"></i>
+                <span>Giao dịch</span>
+            </button>
+
+            <button class="nav-item" data-section="budget">
+                <i data-lucide="wallet-cards"></i>
+                <span>Ngân sách</span>
+            </button>
+
+            <button class="nav-item" data-section="settings">
+                <i data-lucide="settings"></i>
+                <span>Cài đặt</span>
+            </button>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="mini-profile">
+
+                <div class="avatar">
+                    U
+                </div>
+
+                <div>
+                    <strong>Xin chào 👋</strong>
+                    <small>Quản lý tài chính</small>
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+    <main class="main">
+
+        <!-- HEADER -->
+        <header class="header">
+
+            <div>
+                <h1 id="pageTitle">
+                    Tổng quan
+                </h1>
+
+                <p id="todayText"></p>
+            </div>
+
+            <div class="header-actions">
+
+                <button
+                    class="icon-btn"
+                    id="notificationBtn"
+                    title="Bật thông báo"
+                >
+                    <i data-lucide="bell"></i>
+                </button>
+
+                <button
+                    class="add-btn"
+                    id="openModal"
+                >
+                    <i data-lucide="plus"></i>
+                    Thêm chi tiêu
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================= DASHBOARD ================= -->
+        <section
+            id="dashboard"
+            class="section active-section"
+        >
+
+            <!-- STATS -->
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span>
+                            Chi tiêu tháng này
+                        </span>
+
+                        <div class="stat-icon purple">
+                            <i data-lucide="wallet"></i>
+                        </div>
+
+                    </div>
+
+                    <h2 id="monthExpense">
+                        0 ₫
+                    </h2>
+
+                    <p class="stat-desc">
+                        Tổng chi tiêu trong tháng
+                    </p>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span>
+                            Chi tiêu hôm nay
+                        </span>
+
+                        <div class="stat-icon blue">
+                            <i data-lucide="clock-3"></i>
+                        </div>
+
+                    </div>
+
+                    <h2 id="todayExpense">
+                        0 ₫
+                    </h2>
+
+                    <p class="stat-desc">
+                        Tổng chi tiêu hôm nay
+                    </p>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span>
+                            Ngân sách còn lại
+                        </span>
+
+                        <div class="stat-icon green">
+                            <i data-lucide="circle-check"></i>
+                        </div>
+
+                    </div>
+
+                    <h2 id="remainingBudget">
+                        0 ₫
+                    </h2>
+
+                    <p
+                        class="stat-desc"
+                        id="budgetPercent"
+                    >
+                        0% ngân sách đã sử dụng
+                    </p>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span>
+                            Số giao dịch
+                        </span>
+
+                        <div class="stat-icon orange">
+                            <i data-lucide="receipt"></i>
+                        </div>
+
+                    </div>
+
+                    <h2 id="transactionCount">
+                        0
+                    </h2>
+
+                    <p class="stat-desc">
+                        Giao dịch trong tháng
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- CHART + CATEGORY -->
+            <div class="dashboard-grid">
+
+                <!-- CHART -->
+                <div class="card chart-card">
+
+                    <div class="card-header">
+
+                        <div>
+                            <h3>
+                                Chi tiêu gần đây
+                            </h3>
+
+                            <p>
+                                Theo dõi xu hướng chi tiêu
+                            </p>
+                        </div>
+
+                        <select id="chartRange">
+
+                            <option value="7">
+                                7 ngày
+                            </option>
+
+                            <option value="14">
+                                14 ngày
+                            </option>
+
+                            <option value="30">
+                                30 ngày
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="chart">
+
+                        <div class="chart-y">
+
+                            <span>1tr</span>
+                            <span>750k</span>
+                            <span>500k</span>
+                            <span>250k</span>
+                            <span>0</span>
+
+                        </div>
+
+
+                        <div class="chart-area">
+
+                            <div class="grid-lines">
+
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+
+                            </div>
+
+                            <div
+                                class="bars"
+                                id="chartBars"
+                            ></div>
+
+                            <div
+                                class="chart-x"
+                                id="chartLabels"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CATEGORY -->
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+                            <h3>
+                                Danh mục
+                            </h3>
+
+                            <p>
+                                Phân bổ chi tiêu tháng này
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div
+                        id="categoryList"
+                        class="category-list"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RECENT TRANSACTIONS -->
+            <div class="card recent-card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h3>
+                            Giao dịch gần đây
+                        </h3>
+
+                        <p>
+                            Những khoản chi tiêu mới nhất
+                        </p>
+                    </div>
+
+                    <button
+                        class="view-all"
+                        onclick="showSection('transactions')"
+                    >
+                        Xem tất cả
+                        <i data-lucide="arrow-right"></i>
+                    </button>
+
+                </div>
+
+                <div id="recentTransactions"></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= TRANSACTIONS ================= -->
+        <section
+            id="transactions"
+            class="section"
+        >
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h3>
+                            Tất cả giao dịch
+                        </h3>
+
+                        <p>
+                            Quản lý các khoản chi tiêu
+                        </p>
+                    </div>
+
+                    <div class="search-wrapper">
+
+                        <i data-lucide="search"></i>
+
+                        <input
+                            class="search-input"
+                            id="searchInput"
+                            type="text"
+                            placeholder="Tìm giao dịch..."
+                        >
+
+                    </div>
+
+                </div>
+
+                <div id="allTransactions"></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= BUDGET ================= -->
+        <section
+            id="budget"
+            class="section"
+        >
+
+            <div class="budget-container">
+
+                <div class="card budget-main">
+
+                    <div class="card-header">
+
+                        <div>
+                            <h3>
+                                Ngân sách tháng
+                            </h3>
+
+                            <p>
+                                Thiết lập giới hạn chi tiêu
+                            </p>
+                        </div>
+
+                        <div class="budget-icon">
+                            <i data-lucide="piggy-bank"></i>
+                        </div>
+
+                    </div>
+
+
+                    <div class="budget-number">
+
+                        <span>
+                            Ngân sách hiện tại
+                        </span>
+
+                        <strong id="budgetDisplay">
+                            0 ₫
+                        </strong>
+
+                    </div>
+
+
+                    <div class="progress">
+
+                        <div
+                            id="budgetProgress"
+                        ></div>
+
+                    </div>
+
+
+                    <div class="budget-info">
+
+                        <span id="budgetUsed">
+                            Đã dùng: 0 ₫
+                        </span>
+
+                        <span id="budgetLeft">
+                            Còn lại: 0 ₫
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        class="primary-btn"
+                        id="changeBudget"
+                    >
+                        <i data-lucide="pencil"></i>
+                        Thay đổi ngân sách
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= SETTINGS ================= -->
+        <section
+            id="settings"
+            class="section"
+        >
+
+            <div class="card settings-card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h3>
+                            Cài đặt
+                        </h3>
+
+                        <p>
+                            Tùy chỉnh MoneyFlow
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <!-- DARK MODE -->
+                <div class="setting-row">
+
+                    <div class="setting-left">
+
+                        <div class="setting-icon">
+                            <i data-lucide="moon"></i>
+                        </div>
+
+                        <div>
+                            <strong>
+                                Giao diện tối
+                            </strong>
+
+                            <p>
+                                Bật chế độ dark mode
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="darkMode"
+                        >
+
+                        <span></span>
+
+                    </label>
+
+                </div>
+
+
+                <!-- NOTIFICATION -->
+                <div class="setting-row">
+
+                    <div class="setting-left">
+
+                        <div class="setting-icon">
+                            <i data-lucide="bell"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Thông báo hằng ngày
+                            </strong>
+
+                            <p>
+                                Nhắc bạn nhập chi tiêu trong ngày
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="notificationToggle"
+                        >
+
+                        <span></span>
+
+                    </label>
+
+                </div>
+
+
+                <!-- NOTIFICATION TIME -->
+                <div class="setting-row">
+
+                    <div class="setting-left">
+
+                        <div class="setting-icon">
+                            <i data-lucide="clock"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Giờ nhắc
+                            </strong>
+
+                            <p>
+                                Thời gian hiển thị notification
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <input
+                        type="time"
+                        id="notificationTime"
+                        value="20:00"
+                    >
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- ================= MOBILE NAV ================= -->
+
+<div class="mobile-nav">
+
+    <button
+        class="nav-item active"
+        data-section="dashboard"
+    >
+        <i data-lucide="layout-dashboard"></i>
+        <small>Tổng quan</small>
+    </button>
+
+
+    <button
+        class="nav-item"
+        data-section="transactions"
+    >
+        <i data-lucide="arrow-down-up"></i>
+        <small>Giao dịch</small>
+    </button>
+
+
+    <button
+        class="mobile-add"
+        id="mobileAdd"
+    >
+        <i data-lucide="plus"></i>
+    </button>
+
+
+    <button
+        class="nav-item"
+        data-section="budget"
+    >
+        <i data-lucide="wallet-cards"></i>
+        <small>Ngân sách</small>
+    </button>
+
+
+    <button
+        class="nav-item"
+        data-section="settings"
+    >
+        <i data-lucide="settings"></i>
+        <small>Cài đặt</small>
+    </button>
+
+</div>
+
+
+<!-- ================= MODAL ================= -->
+
+<div
+    class="modal-overlay"
+    id="modal"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <div>
+
+                <div class="modal-title">
+
+                    <div class="modal-title-icon">
+                        <i data-lucide="plus"></i>
+                    </div>
+
+                    <div>
+                        <h2>
+                            Thêm chi tiêu
+                        </h2>
+
+                        <p>
+                            Ghi lại khoản chi tiêu của bạn
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <button
+                class="close-btn"
+                id="closeModal"
+            >
+                <i data-lucide="x"></i>
+            </button>
+
+        </div>
+
+
+        <form id="expenseForm">
+
+            <!-- AMOUNT -->
+            <label>
+                Số tiền
+            </label>
+
+            <div class="amount-input">
+
+                <input
+                    type="number"
+                    id="amount"
+                    placeholder="0"
+                    min="1"
+                    required
+                >
+
+                <span>VNĐ</span>
+
+            </div>
+
+
+            <!-- CATEGORY -->
+            <label>
+                Danh mục
+            </label>
+
+            <div
+                class="category-select"
+                id="categorySelect"
+            >
+
+                <button
+                    type="button"
+                    data-category="Ăn uống"
+                    class="selected"
+                >
+                    <i data-lucide="utensils"></i>
+                    <span>Ăn uống</span>
+                </button>
+
+
+                <button
+                    type="button"
+                    data-category="Di chuyển"
+                >
+                    <i data-lucide="car"></i>
+                    <span>Di chuyển</span>
+                </button>
+
+
+                <button
+                    type="button"
+                    data-category="Mua sắm"
+                >
+                    <i data-lucide="shopping-bag"></i>
+                    <span>Mua sắm</span>
+                </button>
+
+
+                <button
+                    type="button"
+                    data-category="Giải trí"
+                >
+                    <i data-lucide="gamepad-2"></i>
+                    <span>Giải trí</span>
+                </button>
+
+
+                <button
+                    type="button"
+                    data-category="Học tập"
+                >
+                    <i data-lucide="book-open"></i>
+                    <span>Học tập</span>
+                </button>
+
+
+                <button
+                    type="button"
+                    data-category="Khác"
+                >
+                    <i data-lucide="package"></i>
+                    <span>Khác</span>
+                </button>
+
+            </div>
+
+
+            <!-- DATE -->
+            <label>
+                Ngày
+            </label>
+
+            <input
+                type="date"
+                id="expenseDate"
+                required
+            >
+
+
+            <!-- NOTE -->
+            <label>
+                Ghi chú
+            </label>
+
+            <div class="input-with-icon">
+
+                <i data-lucide="file-text"></i>
+
+                <input
+                    type="text"
+                    id="note"
+                    placeholder="Ví dụ: Ăn trưa..."
+                >
+
+            </div>
+
+
+            <button
+                class="submit-btn"
+                type="submit"
+            >
+                <i data-lucide="check"></i>
+                Thêm chi tiêu
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
